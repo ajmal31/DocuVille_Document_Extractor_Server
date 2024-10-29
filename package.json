@@ -1,0 +1,21 @@
+{
+  "name": "document_data_extractor",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Extrating data from Gov doc",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "helmet": "^8.0.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "tesseract.js": "^5.1.1"
+  }
+}
