@@ -1,19 +1,44 @@
-import express from "express"
-import cors from "cors"
-import helmet from "helmet"
-import { PORT } from "./utils/const.js"
-import routes from "./Routes/routes.js"
-import morgan from "morgan"
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import { PORT } from "./config/constants.js";
+import routes from "./routes/routes.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 
-const app=express()
-app.use(helmet())
+const app = express();
 
+// Apply middleware for security headers
+app.use(helmet());
+
+// Logger
 app.use(morgan("dev"))
 
-app.use(cors({origin:["http://localhost:5173","http://localhost:3000"]}))
+// CORS configuration for specific origins
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+];
+app.use(cors({ origin: allowedOrigins }));
 
-app.use("/api/v1",routes(express))
+// JSON parsing and URL encoding
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.listen(PORT,()=>{
-    console.warn(`server Listening on port ${PORT}`)
-})
+// Registering routes
+app.use("/api/v1", routes(express));
+
+// Global error handler
+app.use(errorHandler);
+
+// Start the server
+app.listen(PORT, () => {
+    console.info(`
+    -----------------------------
+      Server Listening on port ${PORT}
+      Allowed Origins: ${allowedOrigins.join(", ")}
+    -----------------------------
+    `);
+});
+
+export default app;
